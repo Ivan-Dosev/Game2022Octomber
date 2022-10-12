@@ -11,7 +11,7 @@ class GameSetting : ObservableObject {
     
     @Published var PauseButton     : Bool = true
     @Published var settingButton   : Bool = false
-    @Published var nameBackground   : String = "BG"
+    @Published var nameBackground   : String = "AcbrnqXoi"
     @Published var OnOffBackground   : Bool = false
     @Published var score : Int = 0
     @Published var reclama : Bool = false
