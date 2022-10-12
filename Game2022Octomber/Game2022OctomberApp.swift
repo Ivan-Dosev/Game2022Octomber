@@ -9,9 +9,17 @@ import SwiftUI
 
 @main
 struct Game2022OctomberApp: App {
+    
+    @StateObject  var game =  GameSetting()
+    
     var body: some Scene {
+        
         WindowGroup {
-            ContentView()
+            
+            GameView()
+                .environmentObject(game)
+                .preferredColorScheme(.dark)
+            
         }
     }
 }
