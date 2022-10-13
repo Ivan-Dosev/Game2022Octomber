@@ -188,6 +188,7 @@ extension GameView {
     func scoreGame() -> some View {
         ZStack{
             Text("score = \(gameSetting.score)")
+
                 .fontWeight(.bold)
                 .padding(8)
                 .padding(.horizontal, 4)
@@ -196,6 +197,14 @@ extension GameView {
                     Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
                 }
                 .foregroundColor(.white)
+                .onChange(of: gameSetting.score) { score in
+                    withAnimation(.spring()) {
+                                 self.onOpacity.toggle()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
+                                 self.onOpacity.toggle()
+                        }
+                    }
+                }
             
         }.frame(width: 250, height: 40)
            
