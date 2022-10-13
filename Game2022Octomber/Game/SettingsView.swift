@@ -10,21 +10,61 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var gameSetting : GameSetting
     @State var bgOnOffButton : Bool = false
     
+    var width =  UIScreen.main.bounds.width
+    var height = UIScreen.main.bounds.height
+    
+    // gameSetting.nameBackground = "BG"
     var body: some View {
-        ZStack {
-            Color.yellow
+        ZStack(alignment: .top) {
+            Image(gameSetting.nameTransparency.rawValue)
+                .resizable()
+                .scaledToFill()
+                .frame(width: width, height: height, alignment: .center)
+        
+               
             VStack(alignment: .center, spacing: 50) {
-                Text("TO Do somting ")
-                
-                bgButton()
-                Image(gameSetting.nameBackground)
-                    .resizable()
-                    .frame(width: 100, height: 100)
-            }
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        Text("Back")
+                            .font(.system(size: 30))
+                            .foregroundColor(.white)
+                            .background(Color.red)
+                            .padding(.horizontal, 20)
+                    })
+
+                    Spacer()
+                }
+             
+                    
+                    HStack{
+                        ForEach(BGSetting.allCases, id: \ .id) { img in
+                            if gameSetting.nameTransparency != img {
+                                Image(img.rawValue)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 100, height:100)
+                                    .padding(.horizontal, 20)
+                                    .onTapGesture {
+                                        gameSetting.nameTransparency = img
+                                    }
+                            }
+
+                        }
+                    }
+                    .background(Color.red)
+                    .padding()
+                  
+          
+            }.padding(.top, 100)
         }
+        .frame(width: width, height: height, alignment: .top)
+        .ignoresSafeArea()
     }
 }
 
@@ -33,36 +73,4 @@ struct SettingsView_Previews: PreviewProvider {
         SettingsView()
     }
 }
-extension SettingsView {
-    
-    @ViewBuilder
-    func bgButton() -> some View {
-        ZStack{
-            
-            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                .fill(.linearGradient(colors: [.white.opacity(0.6), .purple.opacity(0.2), .white.opacity(0.6)], startPoint: .topLeading, endPoint: .topTrailing))
-            RoundedRectangle(cornerRadius: 15, style:  .continuous)
-                .stroke(.linearGradient(colors: [.white.opacity(0.6), .clear, .purple.opacity(0.2), .white.opacity(0.6)], startPoint: .topLeading, endPoint: .topTrailing), lineWidth: 1.5)
-            Text(" bg ")
-                .fontWeight(.bold)
-                .padding(8)
-                .padding(.horizontal, 4)
-                .font(.caption)
-                .background{
-                    Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
-                }
-                .foregroundColor(.white)
-            
-        }.frame(width: 75, height: 50)
-        .onTapGesture {
-         //   print("pause \( gameSetting.PauseButton)")
-            gameSetting.OnOffBackground.toggle()
-            if  gameSetting.OnOffBackground {
-                gameSetting.nameBackground = "city"
-            }else{
-                gameSetting.nameBackground = "BG"
-            }
-           
-        }
-    }
-}
+

@@ -15,5 +15,34 @@ class GameSetting : ObservableObject {
     @Published var OnOffBackground   : Bool = false
     @Published var score : Int = 0
     @Published var reclama : Bool = false
+    @Published var nameTransparency : BGSetting =  BGSetting.Ver
     
 }
+
+enum BGSetting : String, CaseIterable, Identifiable {
+ 
+    case Ver
+    case VerA
+    case VerB
+    
+    var id: String { return self.rawValue }
+    
+    func lineX() -> String {
+        switch self {
+            
+        case .Ver:  return "ColorA"
+        case .VerA: return "ColorC"
+        case .VerB: return "ColorE"
+        }
+    }
+    func lineY() -> String {
+        switch self {
+            
+        case .Ver:  return "ColorB"
+        case .VerA: return "ColorD"
+        case .VerB: return "ColorF"
+        }
+    }
+    
+}
+

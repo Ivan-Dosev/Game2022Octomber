@@ -14,7 +14,7 @@ struct GameView: View {
     @EnvironmentObject var gameSetting : GameSetting
     @StateObject       var motionManager = MotionManager()
     @State private     var onOpacity : Bool = false
-    @State private     var onPlay : Bool = false
+    @State private     var onPlay : Bool = true
     
     var width =  UIScreen.main.bounds.width * 1.5
     var height = UIScreen.main.bounds.height * 1.5
@@ -53,7 +53,7 @@ struct GameView: View {
          //       }
          //       .padding(.bottom, 20)
                 
-                Image("VerB")
+                Image(gameSetting.nameTransparency.rawValue)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .opacity(self.onOpacity ? 1 : 0.5)
@@ -72,12 +72,34 @@ struct GameView: View {
                 bottomShape(color: "ColorA")
                     .frame(width: geo.size.width, height: shapeHeight(), alignment: .center)
                     .offset(y: geo.size.height - shapeHeight())
-                
-                RectangleTopElipse()
-                    // .stroke(Color.black, lineWidth: 1)
-                     .fill(LinearGradient(gradient: Gradient(colors: [Color("ColorF"), Color("ColorE")]), startPoint: .top, endPoint: .bottom))
-                     .frame(width: geo.size.width, height: shapeHeight(), alignment: .center)
-                     .offset(y:  UIDevice.current.userInterfaceIdiom == .pad ? 0 : -shapeHeight() )
+                if onPlay {
+                    RectangleTopElipse()
+                        // .stroke(Color.black, lineWidth: 1)
+                        .fill(LinearGradient(gradient: Gradient(colors: [Color(gameSetting.nameTransparency.lineY()), Color(gameSetting.nameTransparency.lineX())]), startPoint: .top, endPoint: .bottom))
+                         .frame(width: geo.size.width, height: shapeHeight(), alignment: .center)
+                         .offset(y:  UIDevice.current.userInterfaceIdiom == .pad ? 0 : -shapeHeight() )
+                         .overlay(
+                           HStack{
+                               Spacer()
+                               Button("Setting") {
+                                   withAnimation(.easeInOut){
+                                       gameSetting.settingButton.toggle()
+                                   }
+                               }
+                               .frame(width: buttonSize(), height: buttonSize())
+                               .font(.system(size: buttonSize() / 4))
+                               .foregroundColor(.red)
+                                 .background(.white)
+                                 .clipShape(Circle())
+                                
+                              
+                           }
+                            .offset(y:  UIDevice.current.userInterfaceIdiom == .pad ? buttonSize() : 0  )
+                            .padding(.horizontal, buttonSize() / 5)
+                               .padding(.bottom, buttonSize() * 0.5 )
+                           )
+                }
+
             }
 
         }
@@ -165,22 +187,18 @@ extension GameView {
     @ViewBuilder
     func scoreGame() -> some View {
         ZStack{
-            
-            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                .fill(.linearGradient(colors: [.white.opacity(0.6), .purple.opacity(0.2), .white.opacity(0.6)], startPoint: .topLeading, endPoint: .topTrailing))
-            RoundedRectangle(cornerRadius: 15, style:  .continuous)
-                .stroke(.linearGradient(colors: [.white.opacity(0.6), .clear, .purple.opacity(0.2), .white.opacity(0.6)], startPoint: .topLeading, endPoint: .topTrailing), lineWidth: 1.5)
             Text("score = \(gameSetting.score)")
                 .fontWeight(.bold)
                 .padding(8)
                 .padding(.horizontal, 4)
-                .font(.caption)
+                .font(.system(size: buttonSize() / 5))
                 .background{
                     Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
                 }
                 .foregroundColor(.white)
             
-        }.frame(width: 150, height: 50)
+        }.frame(width: 250, height: 40)
+           
 
     }
 }
@@ -196,7 +214,7 @@ extension GameView {
      }
      func buttonSize() -> CGFloat {
           if UIDevice.current.userInterfaceIdiom == .pad {
-             return  150
+             return  130
           } else {
               return  70
           }
@@ -222,12 +240,14 @@ extension GameView {
         
         ZStack{
 
-            LinearGradient(gradient: Gradient(colors: [Color("ColorA"), Color("ColorB")]), startPoint: .top, endPoint: .bottom)
+            LinearGradient(gradient: Gradient(colors: [Color(gameSetting.nameTransparency.lineX()), Color(gameSetting.nameTransparency.lineY())]), startPoint: .top, endPoint: .bottom)
               .clipShape(   RectangleElipse())
               .overlay(
                 HStack{
+                    scoreGame()
+                        .padding(.top, buttonSize() / 15)
                     Spacer()
-                    Button("Button") {
+                    Button(gameSetting.PauseButton ? "play" : "pause") {
                         withAnimation(.easeInOut){
                             onPlay.toggle()
                             gameSetting.PauseButton.toggle()
