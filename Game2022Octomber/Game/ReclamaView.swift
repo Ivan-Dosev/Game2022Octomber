@@ -63,7 +63,8 @@ extension ReclamaView {
                     presentationMode.wrappedValue.dismiss()
                     
                 }.padding()
-                    .frame(width: 100, height: 50)
+                    .font(.caption)
+                    .frame(width: 120, height: 50)
                     .background{
                         Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
                     }
@@ -85,7 +86,8 @@ extension ReclamaView {
                     gameSetting.score = 0
                     
                 }.padding()
-                    .frame(width: 100, height: 50)
+                    .font(.caption)
+                    .frame(width: 120, height: 50)
                     .background{
                         Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
                     }
@@ -94,7 +96,8 @@ extension ReclamaView {
                     presentationMode.wrappedValue.dismiss()
                     
                 }.padding()
-                    .frame(width: 100, height: 50)
+                    .font(.caption)
+                    .frame(width: 120, height: 50)
                     .background{
                         Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
                     }
