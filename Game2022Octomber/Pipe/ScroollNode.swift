@@ -127,7 +127,7 @@ extension NodeScale {
         
         switch self {
         case .gameBackgroundScale:
-            return isPad ? 1.5 : 1.35
+            return isPad ? 1.5 : 1.0
         }
     }
 }

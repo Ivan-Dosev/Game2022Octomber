@@ -19,11 +19,12 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
   @Binding var nameBG : String
   @Binding var score  : Int
   @Binding var reclama : Bool
+   var startGame : Bool = Bool()
     
     private(set) var scoreSound = SKAction.playSoundFileNamed("Coin.wav", waitForCompletion: false)
     private(set) var hitSound = SKAction.playSoundFileNamed("Hit_Hurt.wav", waitForCompletion: false)
     
-    var startGame = Bool()
+   
     var speedScene = 4.5
   
     
@@ -42,7 +43,7 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
     var pipeAction = SKAction()
     
     var lastUpdateTime = TimeInterval(0)
-    var sizeScene = CGSize(width: UIScreen.main.bounds.width * 1.5  , height: UIScreen.main.bounds.height * 1.5)
+    var sizeScene = CGSize(width: UIScreen.main.bounds.width * 1.5 , height: UIScreen.main.bounds.height )
     
     private(set) lazy var playingAudio: SKAudioNode = {
         let audioNode = SKAudioNode(fileNamed: "POL-flight-master-short.wav")
@@ -51,13 +52,13 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
         return audioNode
     }()
     
-    init(pauseButton : Binding<Bool>, nameBG: Binding<String>, score: Binding<Int>, reclama: Binding<Bool>) {
+    init(pauseButton : Binding<Bool>, nameBG: Binding<String>, score: Binding<Int>, reclama: Binding<Bool> ) {
     _pauseButton = pauseButton
     _nameBG      = nameBG
     _score       = score
     _reclama     = reclama
-    
-        super.init(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+ 
+        super.init(size: CGSize(width: UIScreen.main.bounds.width * 1.5, height: UIScreen.main.bounds.height * 1.5))
         self.scaleMode = .aspectFill
     }
     
@@ -82,6 +83,7 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
         
         birdNode = BirdNode(animationTimeInterval: 0.1, withTextureAtlas : "Arda" ,size: CGSize(width: 100, height: 100) )
         birdNode?.position = CGPoint(x: 100, y: 500)
+        birdNode?.setScale(CGFloat(NodeScale.gameBackgroundScale.getValue()) * 0.6)
         addChild(birdNode!)
     
      //   setupPlayer()
@@ -97,7 +99,7 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
             }
         
             if pauseButton {
-                print("pppppp")
+               
                 physicsWorld.gravity = .zero
                 birdNode?.physicsBody?.velocity = .zero
               //  playingAudio.isPaused = true
@@ -154,7 +156,10 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
        
             reclama = true
             scene?.run(hitSound)
+            pipeWall.removeFromParent()
+
             pauseButton = true
+         
         }
         
         if collision == (player | PhysicsCategories.boundary.rawValue) {
@@ -162,9 +167,9 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
             // player's position needs to be set to the default one
          //   handleDeadState()
          
-        
+     
             scene?.run(hitSound)
-            pauseButton = true
+         //   pauseButton = true
         }
     }
     private func prepareWorld(for scene: SKScene) {

@@ -17,9 +17,9 @@ struct PipeFactory {
     
     // MARK: - Constants
     
-    static let pipeWidth: CGFloat = 100
+    static let pipeWidth: CGFloat = 70 * CGFloat(NodeScale.gameBackgroundScale.getValue())
     private static var rangedHeight: CGFloat {
-        return CGFloat.range(min: 70, max: 850)
+        return CGFloat.range(min: 100, max: 800)
     }
     private static var doubleRangeHeight: CGFloat {
         return CGFloat.range(min: 40, max: 200)

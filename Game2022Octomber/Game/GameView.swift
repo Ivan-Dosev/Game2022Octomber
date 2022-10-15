@@ -16,13 +16,14 @@ struct GameView: View {
     @State private     var onOpacity : Bool = false
     @State private     var onPlay : Bool = true
     
-    var width =  UIScreen.main.bounds.width * 1.5
-    var height = UIScreen.main.bounds.height * 1.5
+    var width =  UIScreen.main.bounds.width
+    var height = UIScreen.main.bounds.height
+    
     
     var scene : SKScene {
         
         let scene = Game_Scene(pauseButton: $gameSetting.PauseButton, nameBG: $gameSetting.nameBackground, score: $gameSetting.score, reclama: $gameSetting.reclama)
-        scene.size = CGSize(width: width, height: height)
+        scene.size = CGSize(width: width  * 1.5, height: height)
         scene.scaleMode = .aspectFit
         scene.anchorPoint = CGPoint(x: 0, y: 0)
 
@@ -65,9 +66,13 @@ struct GameView: View {
                 
             SpriteView(scene: scene, options: [.allowsTransparency])
                  //   .offset(x:  -motionManager.xValue * 95)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                //    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .frame(width: width * 1.5, height: height, alignment: .center)
                     .edgesIgnoringSafeArea(.all)
                     .padding( -50)
+                    .sheet(isPresented:$gameSetting.reclama) {
+                        ReclamaView()
+                    }
                 
                 bottomShape(color: "ColorA")
                     .frame(width: geo.size.width, height: shapeHeight(), alignment: .center)
@@ -200,7 +205,7 @@ extension GameView {
                 .onChange(of: gameSetting.score) { score in
                     withAnimation(.spring()) {
                                  self.onOpacity.toggle()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3){
                                  self.onOpacity.toggle()
                         }
                     }
@@ -258,8 +263,12 @@ extension GameView {
                     Spacer()
                     Button(gameSetting.PauseButton ? "play" : "pause") {
                         withAnimation(.easeInOut){
-                            onPlay.toggle()
                             gameSetting.PauseButton.toggle()
+                            if !gameSetting.PauseButton {
+                                onPlay = false
+                            }else{
+                                onPlay = true
+                            }
                         }
                     }
                     .frame(width: buttonSize(), height: buttonSize())
