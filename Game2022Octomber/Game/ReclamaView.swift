@@ -25,7 +25,9 @@ struct ReclamaView: View {
                .frame(width: 350, height: 350)
                .shadow(color: Color.white, radius: 20, x: -5, y: -5)
                .overlay(
-                VStack(alignment: .center, spacing: 50){
+                VStack(alignment: .center, spacing: 10){
+                    Text("Your hero died")
+                    Text("you can start over")
                     Text("To save your points please watch this")
                     HStack(alignment: .center, spacing: 50){
                         Button("Cancel") {
