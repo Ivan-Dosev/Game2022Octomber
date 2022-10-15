@@ -22,7 +22,7 @@ struct GameView: View {
     
     var scene : SKScene {
         
-        let scene = Game_Scene(pauseButton: $gameSetting.PauseButton, nameBG: $gameSetting.nameBackground, score: $gameSetting.score, reclama: $gameSetting.reclama)
+        let scene = Game_Scene(pauseButton: $gameSetting.PauseButton, nameBG: $gameSetting.nameBackground, score: $gameSetting.score, reclama: $gameSetting.reclama, soundOn: $gameSetting.soundOn)
         scene.size = CGSize(width: width  * 1.5, height: height)
         scene.scaleMode = .aspectFit
         scene.anchorPoint = CGPoint(x: 0, y: 0)

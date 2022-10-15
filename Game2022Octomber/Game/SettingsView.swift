@@ -59,7 +59,15 @@ struct SettingsView: View {
                     }
                     .background(Color.red)
                     .padding()
-                  
+                
+                
+                Toggle(isOn: $gameSetting.soundOn) {
+                    Text("sound off/on")
+                }
+                .padding()
+                .background(Color.red)
+                .padding()
+
           
             }.padding(.top, 100)
         }

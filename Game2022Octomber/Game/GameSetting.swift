@@ -17,6 +17,7 @@ class GameSetting : ObservableObject {
     @Published var reclama : Bool = false
     @Published var nameTransparency : BGSetting =  BGSetting.Ver
     @Published var startGame        : Bool = false
+    @Published var soundOn          : Bool = true
     
 }
 

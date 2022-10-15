@@ -19,7 +19,10 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
   @Binding var nameBG : String
   @Binding var score  : Int
   @Binding var reclama : Bool
+  @Binding var soundOn : Bool
+    
    var startGame : Bool = Bool()
+    var soundOff : Bool = Bool()
     
     private(set) var scoreSound = SKAction.playSoundFileNamed("Coin.wav", waitForCompletion: false)
     private(set) var hitSound = SKAction.playSoundFileNamed("Hit_Hurt.wav", waitForCompletion: false)
@@ -47,16 +50,17 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
     
     private(set) lazy var playingAudio: SKAudioNode = {
         let audioNode = SKAudioNode(fileNamed: "POL-flight-master-short.wav")
-        audioNode.autoplayLooped = true
+      //  audioNode.autoplayLooped = true
         audioNode.name = "playing audio"
         return audioNode
     }()
     
-    init(pauseButton : Binding<Bool>, nameBG: Binding<String>, score: Binding<Int>, reclama: Binding<Bool> ) {
+    init(pauseButton : Binding<Bool>, nameBG: Binding<String>, score: Binding<Int>, reclama: Binding<Bool> , soundOn: Binding<Bool>) {
     _pauseButton = pauseButton
     _nameBG      = nameBG
     _score       = score
     _reclama     = reclama
+    _soundOn     = soundOn
  
         super.init(size: CGSize(width: UIScreen.main.bounds.width * 1.5, height: UIScreen.main.bounds.height * 1.5))
         self.scaleMode = .aspectFill
@@ -71,8 +75,13 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
         view.allowsTransparency = true
         self.backgroundColor = .clear
         
-        addChild(playingAudio)
-        
+               
+               if soundOn {
+                      addChild(playingAudio)
+               }else{
+                      playingAudio.removeFromParent()
+               }
+    
         prepareWorld(for: self)
      
       let scaleFactor = NodeScale.gameBackgroundScale.getValue()
@@ -92,7 +101,7 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
     
    
         override func update(_ currentTime: TimeInterval) {
-            
+             
             let positionBird = birdNode?.position
             if positionBird!.x < 100 {
                 birdNode?.position = CGPoint(x: 100, y: positionBird!.y)
@@ -157,9 +166,11 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
             reclama = true
             scene?.run(hitSound)
             pipeWall.removeFromParent()
+            removePipes()
 
             pauseButton = true
-         
+            
+            
         }
         
         if collision == (player | PhysicsCategories.boundary.rawValue) {
@@ -184,6 +195,21 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
         scene.physicsBody?.collisionBitMask = player.rawValue
         
         scene.physicsWorld.contactDelegate = self
+    }
+    
+    func removePipes() {
+        var nodes = [SKNode]()
+        
+        infiniteBackgroundNode?.children.forEach({ node in
+            let nodeName = node.name
+            if let doesContainNodeName = nodeName?.contains("pipe"), doesContainNodeName { nodes += [node] }
+        })
+        nodes.forEach { node in
+            node.removeAllActions()
+            node.removeAllChildren()
+            node.removeFromParent()
+        }
+        nodes.removeAll()
     }
 
 }
