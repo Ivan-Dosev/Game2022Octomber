@@ -25,32 +25,12 @@ struct ReclamaView: View {
                .frame(width: 350, height: 350)
                .shadow(color: Color.white, radius: 20, x: -5, y: -5)
                .overlay(
-                VStack(alignment: .center, spacing: 10){
-                    Text("Your hero died")
-                    Text("you can start over")
-                    Text("To save your points please watch this")
-                    HStack(alignment: .center, spacing: 50){
-                        Button("Cancel") {
-                            
-                            presentationMode.wrappedValue.dismiss()
-                            gameSetting.score = 0
-                            
-                        }.padding()
-                            .frame(width: 100, height: 50)
-                            .background{
-                                Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
-                            }
-                        Button("Ok") {
-                            
-                            presentationMode.wrappedValue.dismiss()
-                            
-                        }.padding()
-                            .frame(width: 100, height: 50)
-                            .background{
-                                Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
-                            }
+                ZStack{
+                    if  gameSetting.score < 3 {
+                        oneButton
+                    }else{
+                        twoButtons
                     }
-                    .padding(.bottom, 100)
                 }
                )
               
@@ -66,6 +46,61 @@ struct ReclamaView: View {
 struct ReclamaView_Previews: PreviewProvider {
     static var previews: some View {
         ReclamaView()
+    }
+}
+
+extension ReclamaView {
+    @ViewBuilder
+    var oneButton : some View {
+        VStack(alignment: .center, spacing: 10){
+            Text("Your hero died")
+            Text("try again")
+          
+            HStack(alignment: .center, spacing: 50){
+
+                Button("Ok") {
+                    
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }.padding()
+                    .frame(width: 100, height: 50)
+                    .background{
+                        Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
+                    }
+            }
+            .padding(.bottom, 100)
+        }
+    }
+    
+    @ViewBuilder
+    var twoButtons : some View {
+        VStack(alignment: .center, spacing: 10){
+            Text("Your hero died")
+            Text("you can start over")
+            Text("To save your points please watch this")
+            HStack(alignment: .center, spacing: 50){
+                Button("Cancel") {
+                    
+                    presentationMode.wrappedValue.dismiss()
+                    gameSetting.score = 0
+                    
+                }.padding()
+                    .frame(width: 100, height: 50)
+                    .background{
+                        Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
+                    }
+                Button("Ok") {
+                    
+                    presentationMode.wrappedValue.dismiss()
+                    
+                }.padding()
+                    .frame(width: 100, height: 50)
+                    .background{
+                        Color.white.opacity(0.5).clipShape(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 0.5))
+                    }
+            }
+            .padding(.bottom, 100)
+        }
     }
 }
 
