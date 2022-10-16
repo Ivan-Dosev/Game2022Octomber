@@ -11,6 +11,7 @@ struct ReclamaView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject               var gameSetting : GameSetting
+   
     
     var body: some View {
         ZStack {
@@ -59,7 +60,7 @@ extension ReclamaView {
             HStack(alignment: .center, spacing: 50){
 
                 Button("Ok") {
-                    
+                    gameSetting.score = 0
                     presentationMode.wrappedValue.dismiss()
                     
                 }.padding()
@@ -93,6 +94,9 @@ extension ReclamaView {
                     }
                 Button("Ok") {
                     
+                    gameSetting.tapCount = gameSetting.tapCount + gameSetting.score
+                    UserDefaults.standard.set(gameSetting.tapCount, forKey: "Tap")
+                    gameSetting.score = 0
                     presentationMode.wrappedValue.dismiss()
                     
                 }.padding()

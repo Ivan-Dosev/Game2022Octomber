@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import SpriteKit
 
 struct SettingsView: View {
     
@@ -67,6 +68,26 @@ struct SettingsView: View {
                 .padding()
                 .background(Color.red)
                 .padding()
+                
+                VStack{
+                    Text("[Tottal: \(gameSetting.tapCount)] score: \(gameSetting.score)")
+                    Button {
+                        gameSetting.tapCount = gameSetting.tapCount + gameSetting.score
+                        UserDefaults.standard.set(gameSetting.tapCount, forKey: "Tap")
+                        gameSetting.score = 0
+                    } label: {
+                        Text("Add scote to Tottal")
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(.red)
+                    }
+
+                }
+                
+                VStack{
+                    pickerView()
+                      
+                }
 
           
             }.padding(.top, 100)
@@ -79,6 +100,50 @@ struct SettingsView: View {
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
+    }
+}
+
+extension SettingsView {
+    
+    func arda(name: String) -> String{
+        if name == "AA" {
+            return "aa1"
+        }
+        if name == "CC" {
+            return "cc1"
+        }
+        if name == "DD" {
+            return "dd1"
+        }
+        if name == "EE" {
+            return "ee1"
+        }
+        if name == "FF" {
+            return "ff1"
+        }
+        return "mm1"
+    }
+    
+    func pickerView() -> some View {
+      
+         HStack {
+                ForEach(gameSetting.atlases, id:\.self) { value in
+                  
+                    Image(arda(name: value))
+                        .resizable()
+                        .frame(width: 50, height: 60)
+                        .padding(.horizontal, 5)
+                      
+                        .background((value ==  gameSetting.nameAtlas) ? Color.red : Color.gray)
+                      
+                        .onTapGesture {
+                            gameSetting.nameAtlas = value
+                        }
+                      
+                }
+            }
+         
+          
     }
 }
 

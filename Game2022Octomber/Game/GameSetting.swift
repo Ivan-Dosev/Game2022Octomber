@@ -18,7 +18,14 @@ class GameSetting : ObservableObject {
     @Published var nameTransparency : BGSetting =  BGSetting.Ver
     @Published var startGame        : Bool = false
     @Published var soundOn          : Bool = true
+    @Published var tapCount : Int = 0
+    @Published var nameAtlas : String = "MM"
+    @Published var atlases : [String] = ["MM","AA","CC","DD","EE","FF"]
+    @Published var pickerSelection : Int = 1
     
+    init(){
+        tapCount = UserDefaults.standard.integer(forKey: "Tap")
+    }
 }
 
 enum BGSetting : String, CaseIterable, Identifiable {

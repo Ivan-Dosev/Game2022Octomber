@@ -62,7 +62,7 @@ class BirdNode: SKSpriteNode, Playable, PhysicsContactable {
         // upload the texture atlas
         do {
             textures = try SKTextureAtlas.upload(named: named, beginIndex: 1) { name, index -> String in
-                return "player\(index)"
+                return "\(name)\(index)"
             }
         } catch {
             debugPrint(#function + " thrown the errro while uploading texture atlas : ", error)

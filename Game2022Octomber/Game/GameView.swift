@@ -15,6 +15,7 @@ struct GameView: View {
     @StateObject       var motionManager = MotionManager()
     @State private     var onOpacity : Bool = false
     @State private     var onPlay : Bool = true
+  
     
     var width =  UIScreen.main.bounds.width
     var height = UIScreen.main.bounds.height
@@ -22,7 +23,7 @@ struct GameView: View {
     
     var scene : SKScene {
         
-        let scene = Game_Scene(pauseButton: $gameSetting.PauseButton, nameBG: $gameSetting.nameBackground, score: $gameSetting.score, reclama: $gameSetting.reclama, soundOn: $gameSetting.soundOn)
+        let scene = Game_Scene(pauseButton: $gameSetting.PauseButton, nameBG: $gameSetting.nameBackground, score: $gameSetting.score, reclama: $gameSetting.reclama, soundOn: $gameSetting.soundOn, nameAtlas: $gameSetting.nameAtlas)
         scene.size = CGSize(width: width  * 1.5, height: height)
         scene.scaleMode = .aspectFit
         scene.anchorPoint = CGPoint(x: 0, y: 0)
@@ -110,7 +111,7 @@ struct GameView: View {
         }
         .frame( maxWidth: .infinity,  maxHeight: .infinity, alignment: .bottom)
         .edgesIgnoringSafeArea(.bottom)
-        .onAppear(){ motionManager.detectMotion() }
+        .onAppear(){ motionManager.detectMotion()}
         .onDisappear(){ motionManager.stopMotionUpdate() }
         .sheet(isPresented: $gameSetting.settingButton)  {
             SettingsView()
@@ -192,7 +193,7 @@ extension GameView {
     @ViewBuilder
     func scoreGame() -> some View {
         ZStack{
-            Text("score = \(gameSetting.score)")
+            Text("[ total: \(gameSetting.tapCount) ] score = \(gameSetting.score)")
 
                 .fontWeight(.bold)
                 .padding(8)

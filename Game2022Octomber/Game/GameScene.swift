@@ -20,6 +20,7 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
   @Binding var score  : Int
   @Binding var reclama : Bool
   @Binding var soundOn : Bool
+  @Binding var nameAtlas : String
     
    var startGame : Bool = Bool()
     var soundOff : Bool = Bool()
@@ -41,8 +42,8 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
     var backgroundSpeed = 2.5
     let maxNumOfTiles = 2
     
-    var  bg : SKSpriteNode?
-    var pipeWall = SKNode()
+    var bg : SKSpriteNode?
+    var pipeWall   = SKNode()
     var pipeAction = SKAction()
     
     var lastUpdateTime = TimeInterval(0)
@@ -55,12 +56,13 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
         return audioNode
     }()
     
-    init(pauseButton : Binding<Bool>, nameBG: Binding<String>, score: Binding<Int>, reclama: Binding<Bool> , soundOn: Binding<Bool>) {
+    init(pauseButton : Binding<Bool>, nameBG: Binding<String>, score: Binding<Int>, reclama: Binding<Bool> , soundOn: Binding<Bool>, nameAtlas : Binding<String>) {
     _pauseButton = pauseButton
     _nameBG      = nameBG
     _score       = score
     _reclama     = reclama
     _soundOn     = soundOn
+    _nameAtlas   = nameAtlas
  
         super.init(size: CGSize(width: UIScreen.main.bounds.width * 1.5, height: UIScreen.main.bounds.height * 1.5))
         self.scaleMode = .aspectFill
@@ -90,7 +92,7 @@ class Game_Scene : SKScene , SKPhysicsContactDelegate{
   
       addChild(infiniteBackgroundNode!)
         
-        birdNode = BirdNode(animationTimeInterval: 0.1, withTextureAtlas : "Arda" ,size: CGSize(width: 100, height: 100) )
+        birdNode = BirdNode(animationTimeInterval: 0.1, withTextureAtlas : nameAtlas ,size: CGSize(width: 100, height: 100) )
         birdNode?.position = CGPoint(x: 100, y: 500)
         birdNode?.setScale(CGFloat(NodeScale.gameBackgroundScale.getValue()) * 0.6)
         addChild(birdNode!)
